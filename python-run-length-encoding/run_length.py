@@ -1,17 +1,32 @@
+import re
+
 def encode(seq):
     character = ""
-    counter = 1
     result = ""
-    for n in seq:
-        if n == character:
-            counter += 1
+    counter = 1
+    for n in range(len(seq)):
+        if n < len(seq) -1:
+            if seq[n] == seq[n + 1]:
+                counter += 1
+            else:
+                if counter > 1:
+                    result += str(counter)
+                result += seq[n]
+                counter = 1
+
         else:
-            if character:
-            result += str(counter) + n
+            if counter > 1:
+                result += str(counter)
+            result += seq[n]
             counter = 1
-            character = n
     return result
 
-
 def decode(seq):
-    pass
+    result = ""
+    splitted_string = re.findall("(\d*)?(.)", seq)
+    for i in splitted_string:
+        if i[0] == '':
+            result += i[1]
+        else:
+            result += (int(i[0]) * i[1])
+    return result
