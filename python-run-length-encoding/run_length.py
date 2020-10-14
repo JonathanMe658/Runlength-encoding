@@ -1,3 +1,6 @@
+import re
+
+#Overload of encode for second possibility
 def encode(seq, test):
     character = ""
     result = ""
@@ -15,28 +18,45 @@ def encode(seq, test):
         result += n[0]
     return result
 
-def encode(seq):
+def encode(seq, test, test2):
     character = ""
     result = ""
     counter = 1
     for n in range(len(seq)):
         if n < len(seq) - 1:
-           if seq[n] == seq[n + 1]:
-               counter += 1
-           else:
-               if counter > 1:
-                   result += str(counter)
-               result += seq[n]
-               counter = 1
+            if seq[n] == seq[n + 1]:
+                counter += 1
+            else:
+                if counter > 1:
+                    result += str(counter)
+                result += seq[n]
+                counter = 1
         else:
-           if counter > 1:
-               result += str(counter)
-           result += seq[n]
-           counter = 1
+            if counter > 1:
+                result += str(counter)
+            result += seq[n]
+            counter = 1
     return result
 
-
-
+def encode(seq):
+    index = 0
+    result = ""
+    while len(seq) != index:
+        character = seq[index]
+        match = re.findall(f"{character}+|$", seq[index:])[0]
+        counter = len(match)
+        if counter > 1:
+            result += str(counter)
+        result += character
+        index += counter
+    return result
 
 def decode(seq):
-    pass
+    declist = re.findall("([0-9]*)?(.)", seq)
+    result = ""
+    for n in declist:
+        if n[0] == '':
+            result += n[1]
+        else:
+            result += (int(n[0]) * n[1])
+    return result
